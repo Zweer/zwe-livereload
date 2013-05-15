@@ -1,4 +1,3 @@
-zwe-livereload
-==============
+# ZweLivereload
 
-Yet another node livereload implementation
+## Yet another node livereload implementation
