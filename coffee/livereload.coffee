@@ -1,3 +1,5 @@
+LRProtocol = require 'livereload-protocol'
+
 class Server
   config: 
     aliases: [
@@ -10,7 +12,6 @@ class Server
     ]
     applyJsLive: false
     applyCssLive: true
-    debug: true
     delay: 0
     exclusions: [
       '.git/',
@@ -28,11 +29,42 @@ class Server
     ]
     port: 35729
 
+  parser: null
+  protocols: 
+    monitoring: [LRProtocol.protocols.MONITORING_7]
+    conncheck:  [LRProtocol.protocols.CONN_CHECK_1]
+    saving:     [LRProtocol.protocols.SAVING_1]
+  server: null
   sockets: []
 
   constructor: (config) ->
-    @config[attr] = value for value, attr in config
+    if config
+      @config[attr] = value for value, attr in config
+
+    @parser = new LRProtocol 'server', @protocols
+
+  listen: ->
+    @debug 'LiveReload is waiting for browser to connect'
+
+    if @config.server
+      @config.server.listen @config.port
+      @server = ws.attach @config.server
+    else
+      @server = ws.listen @config.port
+
+    @server.on 'connection', @onConnection.bind @
+    @server.on 'close',      @onClose.bind @
+
+  onConnection: (socket) ->
+    @debug 'Browser connected'
+
+
+    
+  onClose: (socket) ->
+    @debug 'Browser disconnected'
 
   debug: (string) ->
     if @config.debug
-      console.log str
+      console.log string
+
+new Server().listen()
