@@ -1,0 +1,19 @@
+{
+  "name": "zwe-livereload",
+  "description": "LiveReload Server",
+  "version": "0.0.1",
+  "author": "Niccolò Olivieri <flicofloc@gmail.com>",
+  "keywords": ["zwelivereload", "livereload"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Zweer/zwe-livereload.git"
+  },
+  "main": "./lib/livereload",
+  "bin": {
+    "livereload": "./bin/livereload.js"
+  },
+  "engines": {
+    "node": ">=0.6"
+  }
+}
